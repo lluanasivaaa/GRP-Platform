@@ -6,6 +6,9 @@ from services.mitigacao_service import MitigacaoService
 from services.risco_service import RiscoService
 
 
+STATUS_ACAO_OPTIONS = ["Pendente", "Em Andamento", "Concluída"]
+
+
 st.title("Plano de Mitigação")
 st.caption("Acompanhe ações corretivas e preventivas com responsáveis, prazos e status.")
 
@@ -13,7 +16,7 @@ riscos = RiscoService.listar_riscos()
 risco_options = ["Todos"] + [f"{r['id_risco']} - {r['descricao'][:50]}" for r in riscos] if riscos else ["Todos"]
 filtro_risco = st.selectbox("Filtrar por Risco", risco_options)
 
-status_options = ["Todos", "Pendente", "Em Andamento", "Concluída"]
+status_options = ["Todos"] + STATUS_ACAO_OPTIONS
 filtro_status = st.selectbox("Filtrar por Status", status_options)
 
 if filtro_risco == "Todos":
@@ -29,7 +32,7 @@ else:
 mitigacoes = MitigacaoService.listar_mitigacoes(id_risco, status_acao)
 if mitigacoes:
     df = pd.DataFrame(mitigacoes)
-    st.dataframe(df, use_container_width=True)
+    st.dataframe(df, width="stretch")
 else:
     st.info("Nenhuma ação de mitigação encontrada para os filtros aplicados.")
 
@@ -45,7 +48,7 @@ with st.form("criar_mitigacao"):
     descricao_acao = st.text_area("Descrição da Ação")
     responsavel = st.text_input("Responsável")
     prazo = st.date_input("Prazo")
-    status_acao = st.selectbox("Status", ["Pendente", "Em Andamento", "Concluída"])
+    status_acao = st.selectbox("Status", STATUS_ACAO_OPTIONS)
     submitted = st.form_submit_button("Criar")
 
     if submitted and id_risc:
@@ -81,11 +84,15 @@ if mitigacoes:
             id_risc = int(risco_desc.split(" - ")[0])
             descricao_acao = st.text_area("Descrição", value=mitigacao.descricao_acao)
             responsavel = st.text_input("Responsável", value=mitigacao.responsavel)
-            prazo = st.date_input("Prazo", value=pd.to_datetime(mitigacao.prazo))
+            prazo_atual = pd.to_datetime(mitigacao.prazo, errors="coerce")
+            if pd.isna(prazo_atual):
+                prazo_atual = pd.Timestamp.today()
+            status_atual = mitigacao.status_acao if mitigacao.status_acao in STATUS_ACAO_OPTIONS else STATUS_ACAO_OPTIONS[0]
+            prazo = st.date_input("Prazo", value=prazo_atual)
             status_acao = st.selectbox(
                 "Status",
-                ["Pendente", "Em Andamento", "Concluída"],
-                index=["Pendente", "Em Andamento", "Concluída"].index(mitigacao.status_acao),
+                STATUS_ACAO_OPTIONS,
+                index=STATUS_ACAO_OPTIONS.index(status_atual),
             )
             col1, col2 = st.columns(2)
 
