@@ -1,5 +1,5 @@
 class Projeto:
-    def __init__(self, id_projeto=None, nome_projeto="", responsavel="", prazo_final="", orcamento=0.0, status="Ativo"):
+    def __init__(self, id_projeto=None, nome_projeto="", responsavel="", prazo_final="", orcamento=0.0, status="Backlog"):
         self.id_projeto = id_projeto
         self.nome_projeto = nome_projeto
         self.responsavel = responsavel

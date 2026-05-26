@@ -1,6 +1,21 @@
 import streamlit as st
 
 
+PLOTLY_CONFIG = {
+    "displaylogo": False,
+    "responsive": True,
+    "scrollZoom": True,
+    "modeBarButtonsToAdd": ["drawline", "drawrect", "eraseshape"],
+    "toImageButtonOptions": {
+        "format": "png",
+        "filename": "grp-bi-grafico",
+        "height": 720,
+        "width": 1280,
+        "scale": 2,
+    },
+}
+
+
 def inject_section_card_style():
     st.markdown(
         """
@@ -8,7 +23,7 @@ def inject_section_card_style():
             .grp-section-card {
                 background: rgba(255, 255, 255, 0.84);
                 border: 1px solid rgba(15, 23, 42, 0.08);
-                border-radius: 22px;
+                border-radius: 8px;
                 padding: 1.1rem 1.15rem;
                 box-shadow: 0 16px 35px rgba(15, 23, 42, 0.06);
                 backdrop-filter: blur(8px);
@@ -31,7 +46,7 @@ def inject_section_card_style():
                 position: relative;
                 overflow: hidden;
                 padding: 1.1rem 1.15rem;
-                border-radius: 22px;
+                border-radius: 8px;
                 background: linear-gradient(145deg, #ffffff 0%, #f8fbf8 100%);
                 border: 1px solid rgba(22, 101, 52, 0.10);
                 box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
@@ -71,7 +86,7 @@ def inject_section_card_style():
             }
 
             .grp-highlight {
-                border-radius: 24px;
+                border-radius: 8px;
                 padding: 1.35rem;
                 color: #f8fafc;
                 background: linear-gradient(135deg, #0f172a 0%, #16322a 45%, #166534 100%);
@@ -87,6 +102,28 @@ def inject_section_card_style():
             .grp-highlight p {
                 margin: 0;
                 color: rgba(248, 250, 252, 0.86);
+            }
+
+            .grp-chart-card {
+                background: rgba(255, 255, 255, 0.88);
+                border: 1px solid rgba(15, 23, 42, 0.08);
+                border-radius: 8px;
+                padding: 1rem 1rem 0.4rem;
+                box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+                backdrop-filter: blur(8px);
+                margin-bottom: 1rem;
+            }
+
+            .grp-chart-card h3 {
+                margin: 0;
+                color: #0f172a;
+                font-size: 1.06rem;
+            }
+
+            .grp-chart-card p {
+                margin: 0.35rem 0 0.9rem;
+                color: #475569;
+                font-size: 0.93rem;
             }
         </style>
         """,
@@ -129,3 +166,44 @@ def highlight_banner(title: str, description: str):
         """,
         unsafe_allow_html=True,
     )
+
+
+def chart_card(title: str, description: str):
+    st.markdown(
+        f"""
+        <div class="grp-chart-card">
+            <h3>{title}</h3>
+            <p>{description}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_data_table(
+    data,
+    *,
+    title: str | None = None,
+    description: str | None = None,
+    column_config: dict | None = None,
+    hide_index: bool = True,
+    height: int | None = None,
+):
+    if title and description:
+        chart_card(title, description)
+    elif title:
+        section_card(title, "")
+
+    dataframe_kwargs = {
+        "width": "stretch",
+        "hide_index": hide_index,
+        "column_config": column_config,
+    }
+    if height is not None:
+        dataframe_kwargs["height"] = height
+
+    st.dataframe(data, **dataframe_kwargs)
+
+
+def render_plotly_chart(fig):
+    st.plotly_chart(fig, width="stretch", config=PLOTLY_CONFIG)

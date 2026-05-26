@@ -26,14 +26,11 @@ st.markdown(
         }
         [data-testid="stSidebarNav"] { display: none; }
         .stApp {
-            background:
-                radial-gradient(circle at top right, rgba(22, 163, 74, 0.16), transparent 28%),
-                radial-gradient(circle at top left, rgba(15, 23, 42, 0.08), transparent 24%),
-                linear-gradient(180deg, #f4f8f4 0%, #edf3ee 100%);
+            background: linear-gradient(180deg, #f4f8f4 0%, #edf3ee 100%);
         }
         .grp-hero {
-            padding: 1.8rem 2rem;
-            border-radius: 24px;
+            padding: 1.5rem 1.75rem;
+            border-radius: 8px;
             color: #f8fafc;
             background: linear-gradient(135deg, #0f172a 0%, #16322a 52%, #166534 100%);
             box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
@@ -41,9 +38,9 @@ st.markdown(
         }
         .grp-hero h1 {
             margin: 0;
-            font-size: 2.3rem;
+            font-size: 2.15rem;
             font-weight: 800;
-            letter-spacing: -0.02em;
+            letter-spacing: 0;
         }
         .grp-hero p {
             margin: 0.35rem 0 0;
@@ -53,7 +50,7 @@ st.markdown(
         .grp-tag {
             display: inline-block;
             padding: 0.35rem 0.75rem;
-            border-radius: 999px;
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.14);
             font-size: 0.85rem;
             font-weight: 700;
@@ -64,7 +61,7 @@ st.markdown(
         .grp-panel {
             background: rgba(255, 255, 255, 0.82);
             border: 1px solid rgba(15, 23, 42, 0.08);
-            border-radius: 20px;
+            border-radius: 8px;
             padding: 1rem 1.1rem;
             box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
             backdrop-filter: blur(8px);
@@ -75,7 +72,7 @@ st.markdown(
         [data-testid="stSidebar"] * { color: #f8fafc; }
         [data-testid="stSidebar"] .stRadio [role="radiogroup"] > label {
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
+            border-radius: 8px;
             padding: 0.7rem 0.85rem;
             background: rgba(255, 255, 255, 0.06);
             transition: 0.2s ease;
@@ -91,18 +88,45 @@ st.markdown(
         }
         [data-testid="stMetric"], .stDataFrame, div[data-testid="stTable"] {
             background: rgba(255, 255, 255, 0.78);
-            border-radius: 18px;
-            border: 1px solid rgba(15, 23, 42, 0.06);
+            border-radius: 8px;
+            border: 1px solid rgba(15, 23, 42, 0.08);
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
+            backdrop-filter: blur(10px);
+        }
+        .stDataFrame [data-testid="stDataFrameResizable"] {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.94) 100%);
+        }
+        .stDataFrame [data-testid="stDataFrameGlideDataEditor"] {
+            border-radius: 8px;
+        }
+        .stDataFrame [data-testid="stDataFrameGlideDataEditor"] [role="grid"] {
+            background: transparent !important;
+        }
+        .stDataFrame [data-testid="stDataFrameGlideDataEditor"] [role="columnheader"] {
+            background: linear-gradient(180deg, #f8fafc 0%, #eef5f0 100%) !important;
+            color: #0f172a !important;
+            font-weight: 800 !important;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.22) !important;
+        }
+        .stDataFrame [data-testid="stDataFrameGlideDataEditor"] [role="gridcell"] {
+            background: rgba(255, 255, 255, 0.96) !important;
+            color: #1e293b !important;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.72) !important;
+        }
+        .stDataFrame [data-testid="stDataFrameGlideDataEditor"] [role="row"]:hover [role="gridcell"] {
+            background: #f5fbf7 !important;
         }
         div[data-baseweb="select"] > div,
         div[data-baseweb="input"] > div,
         div[data-baseweb="textarea"] > div,
         .stDateInput > div,
-        .stNumberInput > div { border-radius: 14px !important; }
+        .stNumberInput > div { border-radius: 8px !important; }
         .stButton > button, .stDownloadButton > button, .stFormSubmitButton > button {
-            border-radius: 14px;
+            border-radius: 8px;
             border: 0;
             background: linear-gradient(135deg, #166534 0%, #0f766e 100%);
             color: #ffffff;
@@ -111,7 +135,7 @@ st.markdown(
         }
         .stTabs [data-baseweb="tab-list"] { gap: 0.55rem; }
         .stTabs [data-baseweb="tab"] {
-            border-radius: 999px;
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.72);
             border: 1px solid rgba(15, 23, 42, 0.08);
             padding: 0.55rem 1rem;
@@ -145,6 +169,7 @@ st.sidebar.markdown("---")
 page_options = {
     "📊 Dashboard": "dashboard.py",
     "📁 Projetos": "projetos.py",
+    "🧩 Kanban": "kanban.py",
     "⚠️ Riscos": "riscos.py",
     "🛡️ Mitigação": "mitigacao.py",
     "📈 Relatórios": "relatorios.py",

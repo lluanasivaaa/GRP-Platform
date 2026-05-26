@@ -1,14 +1,23 @@
+import os
+
 import mysql.connector
 from mysql.connector import Error
 
 
 class DatabaseConnection:
-    def __init__(self, host="127.0.0.1", user="root", password="2005", database="risk_management", port=3306):
-        self.host = host
-        self.user = user
-        self.password = password
-        self.database = database
-        self.port = port
+    def __init__(
+        self,
+        host=None,
+        user=None,
+        password=None,
+        database=None,
+        port=None,
+    ):
+        self.host = host or os.getenv("DB_HOST", "127.0.0.1")
+        self.user = user or os.getenv("DB_USER", "root")
+        self.password = password if password is not None else os.getenv("DB_PASSWORD", "2005")
+        self.database = database or os.getenv("DB_NAME", "risk_management")
+        self.port = int(port or os.getenv("DB_PORT", "3306"))
         self.connection = None
 
     def connect(self):
@@ -19,26 +28,26 @@ class DatabaseConnection:
                 user=self.user,
                 password=self.password,
                 database=self.database,
+                autocommit=False,
+                charset="utf8mb4",
+                use_unicode=True,
+                connection_timeout=8,
             )
-            if self.connection.is_connected():
-                print("Conectado ao MySQL")
-        except Error as e:
-            print("ERRO REAL DO MYSQL:")
-            print(e)
+        except Error as exc:
             self.connection = None
-            raise e
+            raise RuntimeError(
+                f"Não foi possível conectar ao banco MySQL '{self.database}' em {self.host}:{self.port}. "
+                "Confira se o MySQL está ativo e se as credenciais estão corretas."
+            ) from exc
 
     def disconnect(self):
         if self.connection and self.connection.is_connected():
             self.connection.close()
-            print("Desconectado do MySQL")
+        self.connection = None
 
     def execute_query(self, query, params=None):
         if not self.connection or not self.connection.is_connected():
             self.connect()
-
-        if not self.connection:
-            raise Exception("Falha na conexão com o banco")
 
         cursor = None
         try:
@@ -46,16 +55,14 @@ class DatabaseConnection:
             cursor.execute(query, params or ())
 
             if cursor.with_rows:
-                result = cursor.fetchall()
-            else:
-                self.connection.commit()
-                result = cursor.rowcount
+                return cursor.fetchall()
 
-            return result
-        except Error as e:
-            print("Erro na query:")
-            print(e)
-            return None
+            self.connection.commit()
+            return cursor.rowcount
+        except Error as exc:
+            if self.connection and self.connection.is_connected():
+                self.connection.rollback()
+            raise RuntimeError(f"Erro ao executar consulta no banco: {exc}") from exc
         finally:
             if cursor is not None:
                 cursor.close()

@@ -1,7 +1,9 @@
 -- Script SQL para criar o banco de dados do Sistema de Gestão de Riscos em Projetos de TI
 
-CREATE DATABASE IF NOT EXISTS risk_management_db;
-USE risk_management_db;
+CREATE DATABASE IF NOT EXISTS risk_management
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+USE risk_management;
 
 -- Tabela PROJETOS
 CREATE TABLE IF NOT EXISTS projetos (
@@ -10,7 +12,7 @@ CREATE TABLE IF NOT EXISTS projetos (
     responsavel VARCHAR(255) NOT NULL,
     prazo_final DATE NOT NULL,
     orcamento DECIMAL(10, 2) NOT NULL,
-    status ENUM('Ativo', 'Concluído', 'Cancelado') NOT NULL DEFAULT 'Ativo'
+    status ENUM('Backlog', 'Planejamento', 'Em Execução', 'Em Validação', 'Concluído', 'Cancelado') NOT NULL DEFAULT 'Backlog'
 );
 
 -- Tabela RISCOS
