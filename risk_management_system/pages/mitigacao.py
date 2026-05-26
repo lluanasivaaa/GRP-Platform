@@ -1,3 +1,5 @@
+import html
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -173,52 +175,51 @@ def _prepare_mitigation_dataframe(mitigacoes, riscos):
 
 
 def _render_action_cards(df):
-    cards = []
-    for _, row in df.iterrows():
-        badge = STATUS_BADGES.get(row["status_acao"], STATUS_BADGES["Pendente"])
-        cards.append(
-            f"""
-            <div class="mitig-card">
-                <div class="mitig-card-top">
-                    <div>
-                        <div class="mitig-card-id">Ação #{row["id_acao"]}</div>
-                        <div class="mitig-card-risk">{row["risco"]}</div>
-                    </div>
-                    <div class="mitig-status" style="color:{badge["color"]}; background:{badge["bg"]};">
-                        <span>{badge["icon"]}</span>
-                        <span>{badge["label"]}</span>
-                    </div>
-                </div>
-                <p class="mitig-desc">{row["descricao_acao"]}</p>
-                <div class="mitig-meta">
-                    <div class="mitig-meta-block">
-                        <p class="mitig-meta-label">Responsável</p>
-                        <p class="mitig-meta-value">{row["responsavel"] or "Não definido"}</p>
-                    </div>
-                    <div class="mitig-meta-block">
-                        <p class="mitig-meta-label">Prazo</p>
-                        <p class="mitig-meta-value">{row["prazo_formatado"]}</p>
-                    </div>
-                    <div class="mitig-meta-block">
-                        <p class="mitig-meta-label">Situação</p>
-                        <p class="mitig-meta-value">{row["situacao_prazo"]}</p>
-                    </div>
-                    <div class="mitig-meta-block">
-                        <p class="mitig-meta-label">Risco Vinculado</p>
-                        <p class="mitig-meta-value">#{row["id_risco"]}</p>
-                    </div>
-                </div>
-            </div>
-            """
-        )
-
-    if cards:
-        st.markdown(f'<div class="mitig-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
-    else:
+    if df.empty:
         st.markdown(
             '<div class="mitig-empty">Nenhuma ação disponível para exibir na visão executiva.</div>',
             unsafe_allow_html=True,
         )
+        return
+
+    columns = st.columns(2)
+    for index, (_, row) in enumerate(df.iterrows()):
+        badge = STATUS_BADGES.get(row["status_acao"], STATUS_BADGES["Pendente"])
+        card_html = f"""
+            <div class="mitig-card">
+                <div class="mitig-card-top">
+                    <div>
+                        <div class="mitig-card-id">Ação #{html.escape(str(row["id_acao"]))}</div>
+                        <div class="mitig-card-risk">{html.escape(str(row["risco"]))}</div>
+                    </div>
+                    <div class="mitig-status" style="color:{badge["color"]}; background:{badge["bg"]};">
+                        <span>{html.escape(str(badge["icon"]))}</span>
+                        <span>{html.escape(str(badge["label"]))}</span>
+                    </div>
+                </div>
+                <p class="mitig-desc">{html.escape(str(row["descricao_acao"]))}</p>
+                <div class="mitig-meta">
+                    <div class="mitig-meta-block">
+                        <p class="mitig-meta-label">Responsável</p>
+                        <p class="mitig-meta-value">{html.escape(str(row["responsavel"] or "Não definido"))}</p>
+                    </div>
+                    <div class="mitig-meta-block">
+                        <p class="mitig-meta-label">Prazo</p>
+                        <p class="mitig-meta-value">{html.escape(str(row["prazo_formatado"]))}</p>
+                    </div>
+                    <div class="mitig-meta-block">
+                        <p class="mitig-meta-label">Situação</p>
+                        <p class="mitig-meta-value">{html.escape(str(row["situacao_prazo"]))}</p>
+                    </div>
+                    <div class="mitig-meta-block">
+                        <p class="mitig-meta-label">Risco Vinculado</p>
+                        <p class="mitig-meta-value">#{html.escape(str(row["id_risco"]))}</p>
+                    </div>
+                </div>
+            </div>
+        """
+        with columns[index % len(columns)]:
+            st.markdown(card_html.strip(), unsafe_allow_html=True)
 
 
 inject_section_card_style()
