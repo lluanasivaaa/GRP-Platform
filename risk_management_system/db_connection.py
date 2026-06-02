@@ -50,6 +50,7 @@ class DatabaseConnection:
                     use_unicode=True,
                     connection_timeout=8,
                 )
+                self._ensure_mysql_schema()
             except MySQLError as exc:
                 self.connection = None
                 raise RuntimeError(
@@ -113,6 +114,45 @@ class DatabaseConnection:
                 FOREIGN KEY (id_risco) REFERENCES riscos(id_risco) ON DELETE CASCADE
             )
             """
+        )
+        self.connection.commit()
+        cursor.close()
+
+    def _ensure_mysql_schema(self):
+        cursor = self.connection.cursor()
+        cursor.execute(
+            "CREATE TABLE IF NOT EXISTS projetos ("
+            "id_projeto INT AUTO_INCREMENT PRIMARY KEY, "
+            "nome_projeto VARCHAR(255) NOT NULL, "
+            "responsavel VARCHAR(255) NOT NULL, "
+            "prazo_final VARCHAR(255) NOT NULL, "
+            "orcamento DOUBLE NOT NULL, "
+            "status VARCHAR(64) NOT NULL DEFAULT 'Backlog'"
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
+        )
+        cursor.execute(
+            "CREATE TABLE IF NOT EXISTS riscos ("
+            "id_risco INT AUTO_INCREMENT PRIMARY KEY, "
+            "id_projeto INT NOT NULL, "
+            "descricao TEXT NOT NULL, "
+            "categoria VARCHAR(64) NOT NULL, "
+            "probabilidade VARCHAR(64) NOT NULL, "
+            "impacto VARCHAR(64) NOT NULL, "
+            "nivel_criticidade VARCHAR(64) NOT NULL, "
+            "status_risco VARCHAR(64) NOT NULL DEFAULT 'Ativo', "
+            "FOREIGN KEY (id_projeto) REFERENCES projetos(id_projeto) ON DELETE CASCADE"
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
+        )
+        cursor.execute(
+            "CREATE TABLE IF NOT EXISTS mitigacao ("
+            "id_acao INT AUTO_INCREMENT PRIMARY KEY, "
+            "id_risco INT NOT NULL, "
+            "descricao_acao TEXT NOT NULL, "
+            "responsavel VARCHAR(255) NOT NULL, "
+            "prazo VARCHAR(255) NOT NULL, "
+            "status_acao VARCHAR(64) NOT NULL DEFAULT 'Pendente', "
+            "FOREIGN KEY (id_risco) REFERENCES riscos(id_risco) ON DELETE CASCADE"
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
         )
         self.connection.commit()
         cursor.close()

@@ -26,13 +26,35 @@ streamlit run app.py
 
 4. O app usa MySQL local por padrão com as variáveis:
 
+- `DB_ENGINE=mysql`
 - `DB_HOST=127.0.0.1`
 - `DB_PORT=3306`
 - `DB_USER=root`
 - `DB_PASSWORD=2005`
 - `DB_NAME=risk_management`
 
-Se necessário, configure essas variáveis no ambiente local ou no painel do Streamlit.
+Se quiser rodar localmente com SQLite, defina `DB_ENGINE=sqlite` e opcionalmente `DB_SQLITE_PATH=risk_management.db`.
+
+## Executando localmente
+1. Ative o ambiente virtual:
+
+```powershell
+cd "C:\Users\luana\Desktop\GRP Plataform"
+.\.venv\Scripts\Activate.ps1
+```
+
+2. Execute o app (a partir da raiz):
+
+```powershell
+python app.py
+```
+
+Ou, se preferir, execute diretamente o Streamlit no app:
+
+```powershell
+cd risk_management_system
+streamlit run app.py
+```
 
 ## Deploy no Streamlit Cloud
 Para publicar no Streamlit Cloud e usar o mesmo banco de dados, você precisa de um MySQL acessível a partir da nuvem.
@@ -43,9 +65,9 @@ No painel do Streamlit, configure Secrets com as chaves:
 DB_ENGINE = "mysql"
 DB_HOST = "<HOST>"
 DB_PORT = "3306"
-DB_USER = "root"
-DB_PASSWORD = "2005"
-DB_NAME = "risk_management"
+DB_USER = "<USERNAME>"
+DB_PASSWORD = "<PASSWORD>"
+DB_NAME = "<DATABASE_NAME>"
 ```
 
 > Atenção: `localhost` não funciona no Streamlit Cloud. O banco deve estar em um host público ou em um túnel TCP exposto.
