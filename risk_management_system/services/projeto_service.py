@@ -12,6 +12,10 @@ class ProjetoService:
         if ProjetoService._schema_checked:
             return
 
+        if db.engine == "sqlite":
+            ProjetoService._schema_checked = True
+            return
+
         column_info = db.execute_query("SHOW COLUMNS FROM projetos LIKE 'status'") or []
         if not column_info:
             ProjetoService._schema_checked = True

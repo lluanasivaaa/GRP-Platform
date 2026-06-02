@@ -1,2 +1,6 @@
 __pycache__/
 *.py[cod]
+#. Ignorar banco local e ambientes virtuais
+risk_management.db
+.venv/
+.env

@@ -188,4 +188,8 @@ st.sidebar.markdown(
 )
 
 page_path = Path(__file__).parent / "pages" / page_options[selected_page]
-runpy.run_path(str(page_path), run_name="__main__")
+try:
+    runpy.run_path(str(page_path), run_name="__main__")
+except Exception as exc:
+    st.error("Erro ao iniciar o app. Verifique a conexão com o banco de dados ou a configuração do ambiente.")
+    st.exception(exc)
