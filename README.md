@@ -1,23 +1,21 @@
 # GRP Platform
 
-Projeto de gestão de riscos em Streamlit.
+Aplicação de gestão de riscos, projetos, kanban, mitigação e relatórios desenvolvida em Streamlit.
 
-O aplicativo principal está em `risk_management_system/app.py`. O arquivo `app.py` na raiz é um ponto de entrada alternativo que redireciona para o app principal.
+## Visão geral
+- Interface interativa com navegação por dashboard, projetos, kanban, riscos, mitigação e relatórios.
+- Suporte para banco de dados local via SQLite e conexão opcional com MySQL.
+- Estrutura modular com `risk_management_system/pages`, `services`, `models` e `utils`.
 
 ## Execução local
-1. Abra um terminal na pasta do projeto:
-
-```powershell
-cd "C:\Users\luana\Desktop\GRP Plataform"
-```
-
+1. Abra um terminal na pasta do projeto.
 2. Ative o ambiente virtual:
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
 ```
 
-Se necessário, permita scripts:
+Se o PowerShell impedir execução de scripts, habilite com:
 
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
@@ -35,28 +33,37 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Ou:
+Ou use o comando Streamlit diretamente:
 
 ```powershell
 streamlit run risk_management_system/app.py
 ```
 
-## Configuração do banco de dados
-Por padrão, o app usa MySQL local com as variáveis de ambiente:
+## Banco de dados
+Por padrão, o app utiliza SQLite local para facilitar a execução em ambiente de avaliação.
 
-- `DB_ENGINE=mysql`
-- `DB_HOST=127.0.0.1`
-- `DB_PORT=3306`
-- `DB_USER=root`
-- `DB_PASSWORD=2005`
-- `DB_NAME=risk_management`
-
-Se preferir usar SQLite local:
+Para usar SQLite:
 
 - `DB_ENGINE=sqlite`
 - `DB_SQLITE_PATH=risk_management.db`
 
-## Observações
-- O projeto já cria automaticamente o esquema de tabelas no banco se ele não existir.
-- `.venv/`, `__pycache__/`, `risk_management.db`, `risk_management_dump.sql` e `.env` são ignorados pelo Git.
-- Para apresentação local, mantenha as variáveis de ambiente com o MySQL local ou use o modo SQLite.
+Para usar MySQL, defina as variáveis de ambiente:
+
+- `DB_ENGINE=mysql`
+- `DB_HOST=<HOST>`
+- `DB_PORT=<PORT>`
+- `DB_USER=<USERNAME>`
+- `DB_PASSWORD=<PASSWORD>`
+- `DB_NAME=<DATABASE_NAME>`
+
+## Detalhes importantes
+- O esquema de tabelas é gerado automaticamente ao iniciar o app.
+- Este repositório não contém credenciais ou dados sensíveis.
+- Arquivos locais e de ambiente estão listados em `.gitignore`.
+
+## Estrutura do repositório
+- `app.py`: ponto de entrada raiz para execução do projeto.
+- `requirements.txt`: dependências do Python.
+- `risk_management_system/`: código principal da aplicação.
+- `README.md`: documentação do projeto.
+- `.gitignore`: regras de exclusão de arquivos locais.

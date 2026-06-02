@@ -19,13 +19,13 @@ class DatabaseConnection:
         database=None,
         port=None,
     ):
-        self.engine = os.getenv("DB_ENGINE", "").strip().lower()
+        self.engine = os.getenv("DB_ENGINE", "sqlite").strip().lower()
         if not self.engine:
-            self.engine = "mysql" if mysql is not None else "sqlite"
+            self.engine = "sqlite"
 
         self.host = host or os.getenv("DB_HOST", "127.0.0.1")
         self.user = user or os.getenv("DB_USER", "root")
-        self.password = password if password is not None else os.getenv("DB_PASSWORD", "2005")
+        self.password = password if password is not None else os.getenv("DB_PASSWORD", "")
         self.database = database or os.getenv("DB_NAME", "risk_management")
         self.port = int(port or os.getenv("DB_PORT", "3306"))
         self.sqlite_path = os.getenv("DB_SQLITE_PATH", "risk_management.db")
