@@ -7,7 +7,14 @@ Este repositório contém o app Streamlit de gestão de riscos (`risk_management
 2. Ative o ambiente virtual:
 
 ```powershell
-.venv\Scripts\Activate.ps1
+cd "C:\Users\luana\Desktop\GRP Plataform"
+.\.venv\Scripts\Activate.ps1
+```
+
+Se aparecer erro de execução de scripts, execute apenas uma vez como administrador:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
 3. Execute o app:
