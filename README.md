@@ -1,69 +1,97 @@
-# GRP Platform
+# GRP Platform - Plataforma de Governança e Gestão de Riscos
 
-Aplicação de gestão de riscos, projetos, kanban, mitigação e relatórios desenvolvida em Streamlit.
+Projeto de Extensão Acadêmica para desenvolvimento de uma aplicação web de gestão integrada de riscos, projetos e mitigação.
 
-## Visão geral
-- Interface interativa com navegação por dashboard, projetos, kanban, riscos, mitigação e relatórios.
-- Suporte para banco de dados local via SQLite e conexão opcional com MySQL.
-- Estrutura modular com `risk_management_system/pages`, `services`, `models` e `utils`.
+## 📌 Visão Geral
 
-## Execução local
-1. Abra um terminal na pasta do projeto.
-2. Ative o ambiente virtual:
+A **GRP Platform** é uma solução desenvolvida em Python com Streamlit que oferece funcionalidades completas para gerenciamento de riscos e projetos em ambiente organizacional. A aplicação implementa conceitos de governança corporativa e gestão de riscos, permitindo identificação, análise, mitigação e monitoramento de riscos associados a projetos.
 
-```powershell
-.\.venv\Scripts\Activate.ps1
+## 🎯 Funcionalidades Principais
+
+| Funcionalidade | Descrição |
+|---|---|
+| **Dashboard Executivo** | Visão consolidada com KPIs, indicadores e gráficos em tempo real |
+| **Gestão de Projetos** | CRUD completo com nome, responsável, prazo e orçamento |
+| **Análise de Riscos** | Identificação, categorização e cálculo automático de criticidade |
+| **Matriz Kanban** | Visualização com drag-and-drop de riscos por status |
+| **Plano de Mitigação** | Rastreamento de ações de mitigação com progresso |
+| **Relatórios** | Geração em PDF com análises e estatísticas |
+| **Gráficos Interativos** | Visualizações com Altair (barras, pizza, scatter, heatmaps) |
+
+## 🏗️ Arquitetura do Sistema
+
+```
+risk_management_system/
+├── models/              # Entidades de dados
+├── services/            # Lógica de negócio
+├── pages/               # Interface Streamlit
+├── utils/               # Funções auxiliares
+└── app.py               # Aplicação principal
 ```
 
-Se o PowerShell impedir execução de scripts, habilite com:
+## 📊 Modelo de Dados
 
-```powershell
-Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+**Projeto**: id, nome, responsável, prazo, orçamento, status  
+**Risco**: id, projeto_id, descrição, categoria, probabilidade, impacto, criticidade, status  
+**Mitigação**: id, risco_id, ação, responsável, data_alvo, status, efetividade
+
+## 🧮 Cálculo de Criticidade
+
+**Fórmula:** Score = Probabilidade × Impacto (escala 1-3)  
+**Classificação:** Baixo (1-2) | Médio (3-4) | Alto (6-9)
+
+## 🚀 Como Executar
+
+### Pré-requisitos
+- Python 3.8+
+- pip
+
+### Instalação
+
+1. Clone o repositório:
+```bash
+git clone https://github.com/lluanasivaaa/GRP-Platform.git
+cd GRP-Platform
 ```
 
-3. Instale as dependências:
+2. Crie ambiente virtual:
+```bash
+python -m venv .venv
+.venv\Scripts\Activate  # Windows
+# ou
+source .venv/bin/activate  # Linux/macOS
+```
 
-```powershell
+3. Instale dependências:
+```bash
 pip install -r requirements.txt
 ```
 
-4. Execute o app:
-
-```powershell
-python app.py
-```
-
-Ou use o comando Streamlit diretamente:
-
-```powershell
+4. Execute:
+```bash
 streamlit run risk_management_system/app.py
 ```
 
-## Banco de dados
-Por padrão, o app utiliza SQLite local para facilitar a execução em ambiente de avaliação.
+Acesse em `http://localhost:8501`
 
-Para usar SQLite:
+## 💾 Banco de Dados
 
-- `DB_ENGINE=sqlite`
-- `DB_SQLITE_PATH=risk_management.db`
+**SQLite (padrão)**: Sem configuração necessária  
+**MySQL (opcional)**: Configure variáveis de ambiente DB_ENGINE, DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME
 
-Para usar MySQL, defina as variáveis de ambiente:
+## 📚 Documentação Completa
 
-- `DB_ENGINE=mysql`
-- `DB_HOST=<HOST>`
-- `DB_PORT=<PORT>`
-- `DB_USER=<USERNAME>`
-- `DB_PASSWORD=<PASSWORD>`
-- `DB_NAME=<DATABASE_NAME>`
+Para documentação detalhada sobre arquitetura, conceitos de governança e guias aprofundados, consulte [README_COMPLETO.md](README_COMPLETO.md).
 
-## Detalhes importantes
-- O esquema de tabelas é gerado automaticamente ao iniciar o app.
-- Este repositório não contém credenciais ou dados sensíveis.
-- Arquivos locais e de ambiente estão listados em `.gitignore`.
+## 📋 Tecnologias Utilizadas
 
-## Estrutura do repositório
-- `app.py`: ponto de entrada raiz para execução do projeto.
-- `requirements.txt`: dependências do Python.
-- `risk_management_system/`: código principal da aplicação.
-- `README.md`: documentação do projeto.
-- `.gitignore`: regras de exclusão de arquivos locais.
+- Python 3.x | Streamlit | Pandas | Altair | SQLite/MySQL | FPDF
+
+## 📞 Informações
+
+- **Repositório**: https://github.com/lluanasivaaa/GRP-Platform
+- **Email**: lluanasivaaa@gmail.com
+
+---
+
+**Última Atualização:** 02 de Junho de 2026
