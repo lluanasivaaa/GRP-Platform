@@ -1,7 +1,13 @@
+# Python cache
 __pycache__/
 *.py[cod]
-#. Ignorar banco local e ambientes virtuais
+
+# Virtual environment
+.venv/
+
+# Local database files
 risk_management.db
 risk_management_dump.sql
-.venv/
+
+# Environment variables
 .env
