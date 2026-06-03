@@ -107,8 +107,9 @@ A plataforma oferece um ambiente completo para organizações gerenciarem seus p
 
 ```
 GRP Platform/
-├── app.py                          # Ponto de entrada Streamlit
 ├── requirements.txt                # Dependências Python
+├── scripts/                        # Utilitários de banco e execução
+├── tests/                          # Testes automatizados de sanidade
 ├── risk_management_system/
 │   ├── app.py                      # Configuração e navegação principal
 │   ├── db_connection.py            # Gerenciamento de conexão com BD
@@ -325,7 +326,7 @@ def calcular_score_risco(probabilidade, impacto):
 ## 🚀 Como Instalar e Executar
 
 ### Pré-requisitos
-- **Python 3.8+** instalado
+- **Python 3.11+** instalado
 - **Git** para controle de versão
 - **pip** (gerenciador de pacotes Python)
 - **Windows, macOS ou Linux**
@@ -369,17 +370,18 @@ pip install -r requirements.txt
 streamlit run risk_management_system/app.py
 ```
 
-#### Opção B - Python:
-```bash
-python app.py
-```
-
 A aplicação abrirá automaticamente em `http://localhost:8501`
 
 ### Passo 5: Configurar Banco de Dados (Opcional)
 
 **Padrão - SQLite Local:**
-O sistema utiliza SQLite por padrão, nenhuma configuração necessária.
+O sistema utiliza SQLite por padrão e o arquivo padrão é `risk_management_system/risk_management.db`.
+
+Para gerar dados de demonstração no SQLite local:
+
+```bash
+python scripts/populate_db.py
+```
 
 **Alternativa - MySQL:**
 Defina as variáveis de ambiente:
@@ -630,7 +632,7 @@ pip install -r requirements.txt
 ### Erro: "Port 8501 is already in use"
 **Solução**: Execute em porta diferente
 ```bash
-streamlit run app.py --server.port 8502
+streamlit run risk_management_system/app.py --server.port 8502
 ```
 
 ### Erro: "Database Connection Failed"
