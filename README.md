@@ -27,6 +27,8 @@ risk_management_system/
 ├── pages/               # Interface Streamlit
 ├── utils/               # Funções auxiliares
 └── app.py               # Aplicação principal
+scripts/                 # Utilitários de banco e execução
+tests/                   # Testes automatizados de sanidade
 ```
 
 ## 📊 Modelo de Dados
@@ -43,7 +45,7 @@ risk_management_system/
 ## 🚀 Como Executar
 
 ### Pré-requisitos
-- Python 3.8+
+- Python 3.11+
 - pip
 
 ### Instalação
@@ -76,8 +78,14 @@ Acesse em `http://localhost:8501`
 
 ## 💾 Banco de Dados
 
-**SQLite (padrão)**: Sem configuração necessária  
-**MySQL (opcional)**: Configure variáveis de ambiente DB_ENGINE, DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME
+**SQLite (padrão)**: usa `risk_management_system/risk_management.db` por padrão, sem configuração necessária  
+**MySQL (opcional)**: configure variáveis de ambiente `DB_ENGINE=mysql`, `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`
+
+Para popular o SQLite com dados de demonstração:
+
+```bash
+python scripts/populate_db.py
+```
 
 ## 📚 Documentação Completa
 
